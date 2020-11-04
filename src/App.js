@@ -1,23 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useState } from "react";
+import "./App.css";
+import { moviesData } from "./components/MoviesData";
+import MovieList from "./components/MovieList/MovieList";
+import AddMovie from "./components/AddMovie/AddMovie";
+import Filter from "./components/Filter/Filter";
 function App() {
+  const [movies, setMovies] = useState(moviesData);
+  const [titleSearch, setTitleSearch] = useState("");
+  const [rateSearch, setRateSearch] = useState(0);
+  const handleAdd = (newMovie) => {
+    if (
+      newMovie.title!=="" &&
+      newMovie.description!=="" &&
+      newMovie.date!=="" &&
+      newMovie.posterUrl!==""&&
+      newMovie.rate!==0
+    ) {
+      setMovies([...movies, newMovie]);
+    }else{
+      alert('All fields are mandatory!')
+    }
+   
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      
+      <div style={{ display: "flex", justifyContent: "space-around", width: "100%" , background:'black'}}>
+      <AddMovie handleAdd={handleAdd} />
+        <Filter
+          rate={rateSearch}
+          setRateSearch={setRateSearch}
+          setTitleSearch={setTitleSearch}
+        />
+      </div>
+      <h1 id='appTitle'>Checkpoint React hooks</h1>
+      <MovieList
+        rateSearch={rateSearch}
+        titleSearch={titleSearch}
+        movies={movies}
+      />
     </div>
   );
 }
